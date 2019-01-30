@@ -4,7 +4,6 @@ import QtQuick.Controls.Material 2.2
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.3
 import "."
-//import "Names.js" as Names;
 
 Window {
     id: window
@@ -46,7 +45,6 @@ Window {
         Button {
             id: addButton
             action: addAction
-            focus: true
             text: "Add"
             KeyNavigation.left: nameText
             KeyNavigation.backtab: nameText
@@ -183,7 +181,6 @@ Window {
             }
         }
     }
-
     property var fibs: []
     function fibo_(n) {
         if(n<2) return n;
@@ -192,13 +189,10 @@ Window {
         return fibs[n];
     }
 
-    property bool addOneToAllFibs: addOneToAllFibsCheckbox.checked
-
     // Note that this function is reevaluated by all elements if the property window.addOneToAllFibs changes.
     // There is no observer explicitly defined.
     function fibo(n) {
-        return fibo_(n) + (window.addOneToAllFibs ? 1 : 0);
+        return fibo_(n) + (addOneToAllFibsCheckbox.checked ? 1 : 0);
     }
-
     NamesModel { id: namesModel }
 }
