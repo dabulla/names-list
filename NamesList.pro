@@ -30,3 +30,6 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 
 DISTFILES += \
     qtquickcontrols2.conf
+
+HEADERS += \
+    indexmodel.h

@@ -3,5 +3,6 @@
         <file>main.qml</file>
         <file>qtquickcontrols2.conf</file>
         <file>NamesModel.qml</file>
+        <file>main_native.qml</file>
     </qresource>
 </RCC>
