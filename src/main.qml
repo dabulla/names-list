@@ -4,7 +4,7 @@ import QtQuick.Controls.Material 2.2
 import QtQuick.Controls 2.12
 import QtQuick.Layouts 1.3
 import de.danielbulla 1.0
-import "."
+import "../data" as Data
 
 Window {
     id: window
@@ -43,6 +43,7 @@ Window {
                 regExp: /.{1,20}/
             }
             placeholderText: qsTr("Enter name")
+            selectByMouse: true
             KeyNavigation.right: addButton
             KeyNavigation.tab: addButton
             Keys.onReturnPressed: addAction.trigger()
@@ -118,11 +119,10 @@ Window {
                 }
                 property bool isValid: typeof namesModel.get(column+row*tableView.columns) !== "undefined"
                 property string name: isValid ? namesModel.get(column+row*tableView.columns).name : ""
-                //property int n: name.split('').reduce((pv, cv) => pv+cv.charCodeAt(0), 0)
-                property int fibo: window.fibo(name.length * 3)
+                //property int fibo: window.fibo( name.split('').reduce((pv, cv) => pv+cv.charCodeAt(0), 0))
+                property int fibo: window.fibo(   name.length * 3)
                 property bool triggerRed: fibo > 500
-                //color: "grey"
-                color: triggerRed ? "red" : "green"//Material.background
+                color: triggerRed ? "red" : "green" //Material.background
                 Text {
                     anchors.horizontalCenter: parent.horizontalCenter
                     anchors.top: parent.top
@@ -192,5 +192,5 @@ Window {
     function fibo(n) {
         return fibo_(n) + (addOneToAllFibsCheckbox.checked ? 1 : 0);
     }
-    NamesModel { id: namesModel }
+    Data.NamesModel { id: namesModel }
 }

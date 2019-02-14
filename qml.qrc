@@ -1,8 +1,7 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
+        <file>src/main.qml</file>
         <file>qtquickcontrols2.conf</file>
-        <file>NamesModel.qml</file>
-        <file>main_native.qml</file>
+        <file>data/NamesModel.qml</file>
     </qresource>
 </RCC>

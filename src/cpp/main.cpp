@@ -12,7 +12,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<TestModel>("de.danielbulla", 1, 0, "IndexModel");
 
     QQmlApplicationEngine engine;
-    engine.load(QUrl(QStringLiteral("qrc:/main_native.qml")));
+    engine.load(QUrl(QStringLiteral("qrc:/src/main.qml")));
     if (engine.rootObjects().isEmpty())
         return -1;
 
