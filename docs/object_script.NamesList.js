@@ -41,11 +41,11 @@ C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Basic/objects-Release/qtquickcontrols
 C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Basic/objects-Release/qtquickcontrols2basicstyleplugin_resources_2/.rcc/qrc_qtquickcontrols2basicstyleplugin_raw_qml_0.cpp.o
 C:/Qt/6.3.0/wasm_32/lib/objects-Release/qtquickcontrols2basicstyleplugin_resources_3/.rcc/qrc_qtquickcontrols2basicstyleplugin.cpp.o
 C:/Qt/6.3.0/wasm_32/qml/QtQuick/Templates/libqtquicktemplates2plugin.a
+C:/Qt/6.3.0/wasm_32/qml/QtQuick/Controls/impl/libqtquickcontrols2implplugin.a
 C:/Qt/6.3.0/wasm_32/qml/QtQuick/Controls/Material/impl/libqtquickcontrols2materialstyleimplplugin.a
 C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Material/impl/objects-Release/qtquickcontrols2materialstyleimplplugin_resources_1/.rcc/qrc_qmake_QtQuick_Controls_Material_impl.cpp.o
 C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Material/impl/objects-Release/qtquickcontrols2materialstyleimplplugin_qmlcache/.rcc/qmlcache/qtquickcontrols2materialstyleimplplugin_qmlcache_loader.cpp.o
 C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Material/impl/objects-Release/qtquickcontrols2materialstyleimplplugin_resources_2/.rcc/qrc_qtquickcontrols2materialstyleimplplugin_raw_qml_0.cpp.o
-C:/Qt/6.3.0/wasm_32/qml/QtQuick/Controls/impl/libqtquickcontrols2implplugin.a
 C:/Qt/6.3.0/wasm_32/qml/QtQuick/Controls/Fusion/libqtquickcontrols2fusionstyleplugin.a
 C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Fusion/objects-Release/qtquickcontrols2fusionstyleplugin_resources_1/.rcc/qrc_qmake_QtQuick_Controls_Fusion.cpp.o
 C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Fusion/objects-Release/qtquickcontrols2fusionstyleplugin_qmlcache/.rcc/qmlcache/qtquickcontrols2fusionstyleplugin_qmlcache_loader.cpp.o
@@ -62,12 +62,12 @@ C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Universal/objects-Release/qtquickcont
 C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Universal/objects-Release/qtquickcontrols2universalstyleplugin_resources_2/.rcc/qrc_qtquickcontrols2universalstyleplugin_raw_qml_0.cpp.o
 C:/Qt/6.3.0/wasm_32/lib/objects-Release/qtquickcontrols2universalstyleplugin_resources_3/.rcc/qrc_qtquickcontrols2universalstyleplugin.cpp.o
 C:/Qt/6.3.0/wasm_32/lib/libQt6QuickControls2.a
-C:/Qt/6.3.0/wasm_32/qml/QtQuick/Controls/Basic/impl/libqtquickcontrols2basicstyleimplplugin.a
-C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Basic/impl/objects-Release/qtquickcontrols2basicstyleimplplugin_resources_1/.rcc/qrc_qmake_QtQuick_Controls_Basic_impl.cpp.o
 C:/Qt/6.3.0/wasm_32/qml/QtQuick/Shapes/libqmlshapesplugin.a
 C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Shapes/objects-Release/QuickShapesPrivate_resources_1/.rcc/qrc_qmake_QtQuick_Shapes.cpp.o
 C:/Qt/6.3.0/wasm_32/lib/objects-Release/QuickShapesPrivate_resources_2/.rcc/qrc_qtquickshapes.cpp.o
 C:/Qt/6.3.0/wasm_32/lib/libQt6QuickShapes.a
+C:/Qt/6.3.0/wasm_32/qml/QtQuick/Controls/Basic/impl/libqtquickcontrols2basicstyleimplplugin.a
+C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Basic/impl/objects-Release/qtquickcontrols2basicstyleimplplugin_resources_1/.rcc/qrc_qmake_QtQuick_Controls_Basic_impl.cpp.o
 C:/Qt/6.3.0/wasm_32/qml/QtQuick/Controls/Fusion/impl/libqtquickcontrols2fusionstyleimplplugin.a
 C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Fusion/impl/objects-Release/qtquickcontrols2fusionstyleimplplugin_resources_1/.rcc/qrc_qmake_QtQuick_Controls_Fusion_impl.cpp.o
 C:/Qt/6.3.0/wasm_32/./qml/QtQuick/Controls/Fusion/impl/objects-Release/qtquickcontrols2fusionstyleimplplugin_qmlcache/.rcc/qmlcache/qtquickcontrols2fusionstyleimplplugin_qmlcache_loader.cpp.o

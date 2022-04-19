@@ -8,7 +8,7 @@ import "../data" as Data
 
 Window {
     id: window
-    visible: true
+    visible: false
     minimumWidth: 640
     minimumHeight: 480
     title: "Name Ranking"
@@ -16,7 +16,8 @@ Window {
     Material.theme: Material.Dark
     color: Material.background
 
-    property int nameRectWidth: 200
+    Component.onCompleted: window.show()
+    property int nameRectWidth: Screen.orientation === Qt.PortraitOrientation ? 120 : 200
     property int nameRectHeight: 115
     property int nameRectSpacing: 18*2
     property int textSize: 16
@@ -33,6 +34,7 @@ Window {
     }
     ScrollBar {
         id: scrollBar
+        z: 99
         anchors.right: parent.right
         height: mainLayout.height - descriptionBox.height
         anchors.bottom: parent.bottom
@@ -47,15 +49,24 @@ Window {
             Behavior on myHeight { NumberAnimation { duration: 500 } }
             Layout.fillWidth: true
             Layout.preferredHeight: myHeight
-            clip:true
-            Label {
+            clip: true
+            Item {
+                z: 99
                 anchors.top: parent.top
                 anchors.right: parent.right
-                anchors.margins: 5
-                text: "x"
-                font.weight: Font.Bold
+                width: 48
+                height: 48
+                Label {
+                    anchors.centerIn: parent
+                    text: "x"
+                    font.weight: Font.Bold
+                    font.pixelSize: 24
+                    color: Qt.darker(Material.primaryTextColor, closeButtonMouseArea.containsMouse ? 1.2 : 1.0)
+                }
                 MouseArea {
+                    id: closeButtonMouseArea
                     anchors.fill: parent
+                    hoverEnabled: true
                     onClicked: descriptionBox.myHeight = 0
                 }
             }
@@ -72,18 +83,16 @@ Window {
                        <br><b>Why is this awesome?</b><br>
                        The name list is fully loaded into memory while the calculation is done lazily only for visible items. This however, is not done explicitly in
                        this examples source code and is automatically done by Qt. Other frameworks usually require developers to define a multitude of data generation,
-                       change detection and optimization code to achieve similar results.
+                       change detection and optimization code to achieve similar results. Works with touch screens.
                        The source code for this example is ~200 lines."
             }
         }
-
         RowLayout {
             id: controlsRow
             spacing: 10
             TextField {
                 id: nameText
                 width: 200
-                focus: true
                 validator: RegularExpressionValidator {
                     regularExpression: /.{1,20}/
                 }
@@ -99,7 +108,10 @@ Window {
                 KeyNavigation.left: nameText
                 KeyNavigation.backtab: nameText
             }
-            CheckBox { id: addOneToAllFibsCheckbox }
+            CheckBox {
+                id: addOneToAllFibsCheckbox
+                focus: true
+            }
             Label {
                 Layout.minimumWidth: 70
                 text: "fibo<sub>n</sub>" + (addOneToAllFibsCheckbox.checked ? " + 1" : "")
@@ -116,113 +128,105 @@ Window {
             // it also analyzes all dependencies of fibo(...)
             text: qsTr("Fibbonacci of \"<i>%1</i>\": %2").arg(nameText.text).arg(window.fibo(nameText.text.length * 3))
         }
-        Item {
+        TableView {
+            id: tableView
             Layout.fillHeight: true
             Layout.fillWidth: true
-            TableView {
-                id: tableView
-                anchors.top: parent.top
-                anchors.horizontalCenter: parent.horizontalCenter
-                anchors.bottom: parent.bottom
-                flickableDirection: Flickable.VerticalFlick
-                ScrollBar.vertical: scrollBar
-                clip: true
+            flickableDirection: Flickable.VerticalFlick
+            ScrollBar.vertical: scrollBar
+            clip: true
 
-                property int spacing: window.nameRectSpacing
+            property int spacing: window.nameRectSpacing
 
-                // The expression reevaluates whenever parent.width or window.nameRectWidth changes
-                property int myColumns: Math.floor(window.width / (window.nameRectWidth + spacing))
-                onMyColumnsChanged: console.log("Number of columns is now: " + myColumns)
+            // The expression reevaluates whenever parent.width or window.nameRectWidth changes
+            property int myColumns: Math.floor(window.width / (window.nameRectWidth + spacing))
+            onMyColumnsChanged: console.log("Number of columns is now: " + myColumns)
 
-                // center the whole table view horizontally by updating width based on the number of columns
-                width: columns * window.nameRectWidth + (columns-1) * spacing
+            contentWidth: columns * window.nameRectWidth + (columns) * spacing
 
-                // model will update tableView.columns
-                model: IndexModel { id: theModel; rowCount: Math.ceil(namesModel.count/tableView.myColumns); columnCount: tableView.myColumns }
-                columnWidthProvider: function (column) { return tableView.width/tableView.columns }
-                rowHeightProvider: function(row) { return window.nameRectHeight+spacing }
+            // center the whole table view horizontally by updating leftMargin
+            leftMargin: (parent.width - contentWidth) * 0.5
 
-                delegate: Item {
-                    visible: nameRect.isValid // hide items in last row which do not exist
+            // model will update tableView.columns
+            model: IndexModel { id: theModel; rowCount: Math.ceil(namesModel.count/tableView.myColumns); columnCount: tableView.myColumns }
+            columnWidthProvider: function (column) { return window.nameRectWidth + spacing }
+            rowHeightProvider: function(row) { return window.nameRectHeight+spacing }
+
+            delegate: Item {
+                visible: nameRect.isValid // hide items in last row which do not exist
+                Rectangle {
+                    id: nameRect
+                    anchors.centerIn: parent
+                    width: window.nameRectWidth
+                    height: window.nameRectHeight
+                    radius: 10
+                    color: Material.color(nameRect.triggered ? Material.Green : Material.Red)
+                    property int myIndex: column + row * tableView.columns
+                    property bool isValid: typeof namesModel.get( myIndex ) !== "undefined"
+                    property string name: isValid ? namesModel.get( myIndex ).name : ""
+                    property int fibo: window.fibo( name.length * 3 )
+                    property bool triggered: fibo > window.threshold
+                    Text {
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.top: parent.top
+                        anchors.topMargin: 20
+                        text: nameRect.name
+                        font.weight: Font.Bold
+                        font.pixelSize: window.textSize
+                        color: Material.primaryTextColor
+                    }
+                    Text {
+                        id: score
+                        anchors.horizontalCenter: parent.horizontalCenter
+                        anchors.bottom: parent.bottom
+                        anchors.bottomMargin: bottomButton.height + 15
+                        text: nameRect.fibo
+                        font.pixelSize:  window.textSize
+                        color: Material.primaryTextColor
+                    }
+                    Text {
+                        visible: mouseAreaScore.containsMouse
+                        anchors.baseline: score.baseline
+                        anchors.left: score.right
+                        text: " is " + (nameRect.triggered ? "above" : "below") + " " + window.threshold
+                        font.pixelSize:  window.textSize/2
+                        color: Material.primaryTextColor
+                    }
+                    MouseArea {
+                        id: mouseAreaScore
+                        anchors.fill: score
+                        hoverEnabled: true
+                    }
                     Rectangle {
-                        id: nameRect
-                        anchors.centerIn: parent
-                        width: window.nameRectWidth
-                        height: window.nameRectHeight
-                        property int myIndex: column + row * tableView.columns
-                        SequentialAnimation {
-                            id: removeAnimation
-                            ParallelAnimation {
-                                NumberAnimation { target: nameRect; property: "scale";   to: 0.0; duration: 400; easing.type: Easing.InQuad }
-                                NumberAnimation { target: nameRect; property: "opacity"; to: 0.0; duration: 400 }
-                            }
-                            NumberAnimation { target: nameRect; property: "width"; to: 0.0; duration: 400; easing.type: Easing.InOutQuad }
-                            onStopped: { namesModel.remove( nameRect.myIndex ) }
-                        }
-                        property bool isValid: typeof namesModel.get( myIndex ) !== "undefined"
-                        property string name: isValid ? namesModel.get( myIndex ).name : ""
-                        property int thres: 500
-                        property int fibo: window.fibo( name.length * 3 )
-                        property bool triggered: fibo > nameRect.thres
-                        color: Material.color(nameRect.triggered ? Material.Green : Material.Red)
-                        radius: 10
+                        id: bottomButton
+                        height: 22
+                        anchors.bottom: parent.bottom
+                        anchors.left: parent.left
+                        anchors.right: parent.right
+                        anchors.margins: 10
+                        radius: 5
+                        color: Qt.darker(Material.foreground, mouseArea.containsMouse ? 1.1 : 1.0)
                         Text {
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.top: parent.top
-                            anchors.topMargin: 20
-                            Layout.alignment: Qt.AlignCenter
-                            text: nameRect.name
-                            font.weight: Font.Bold
-                            font.pixelSize: window.textSize
-                            color: Material.primaryTextColor
-                        }
-                        Text {
-                            id: score
-                            anchors.horizontalCenter: parent.horizontalCenter
-                            anchors.bottom: parent.bottom
-                            anchors.bottomMargin: bottomButton.height + 15
-                            Layout.alignment: Qt.AlignCenter
-                            text: nameRect.fibo
-                            font.pixelSize:  window.textSize
-                            color: Material.primaryTextColor
-                        }
-                        Text {
-                            visible: mouseAreaRect.containsMouse
-                            anchors.baseline: score.baseline
-                            anchors.left: score.right
-                            text: " is " + (nameRect.triggered ? "above" : "below") + " " + nameRect.thres
-                            font.pixelSize:  window.textSize/2
-                            color: Material.primaryTextColor
+                            anchors.centerIn: parent
+                            text: "REMOVE"
+                            font.pixelSize: 13
                         }
                         MouseArea {
-                            id: mouseAreaRect
-                            anchors.fill: score
+                            id: mouseArea
+                            anchors.fill: parent
                             hoverEnabled: true
-                        }
-                        Rectangle {
-                            id: bottomButton
-                            height: 22
-                            anchors.bottom: parent.bottom
-                            anchors.left: parent.left
-                            anchors.right: parent.right
-                            anchors.margins: 10
-                            radius: 5
-                            color: Qt.darker(Material.foreground, mouseArea.containsMouse ? 1.1 : 0.0)
-                            Text {
-                                anchors.centerIn: parent
-                                text: "REMOVE"
-                                font.pixelSize: 13
-                            }
-                            MouseArea {
-                                id: mouseArea
-                                anchors.fill: parent
-                                hoverEnabled: true
-                                onClicked: {
-                                    removeAnimation.start()
-                                }
-                            }
+                            onClicked: removeAnimation.start()
                         }
                     }
+                }
+                SequentialAnimation {
+                    id: removeAnimation
+                    ParallelAnimation {
+                        NumberAnimation { target: nameRect; property: "scale";   to: 0.0; duration: 400; easing.type: Easing.InQuad }
+                        NumberAnimation { target: nameRect; property: "opacity"; to: 0.0; duration: 400 }
+                    }
+                    NumberAnimation { target: nameRect; property: "width"; to: 0.0; duration: 400; easing.type: Easing.InOutQuad }
+                    onStopped: { namesModel.remove( nameRect.myIndex ) }
                 }
             }
         }
@@ -240,5 +244,6 @@ Window {
     function fibo(n) {
         return fibo_(n) + (addOneToAllFibsCheckbox.checked ? 1 : 0);
     }
+    property int threshold: 500
     Data.NamesModel { id: namesModel }
 }
