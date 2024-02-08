@@ -126,7 +126,7 @@ Window {
 
             // Qml analyzes this binding and builds a dependency tree. text is updated, when "nameText.text" changes.
             // it also analyzes all dependencies of fibo(...)
-            text: qsTr("Fibbonacci of \"<i>%1</i>\": %2").arg(nameText.text).arg(window.fibo(nameText.text.length * 3))
+            text: qsTr("Fibonacci of \"<i>%1</i>\": %2").arg(nameText.text).arg(window.fibo(nameText.text.length * 3))
         }
         TableView {
             id: tableView
